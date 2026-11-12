@@ -1,0 +1,96 @@
+name: DoomScrollInterrupter
+
+# Change "com.example" (here and in Shared/AppGroup.swift) to your own reverse-domain prefix.
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: "16.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    # Set this to your Apple Developer Team ID (or pick the team in Xcode's Signing tab).
+    DEVELOPMENT_TEAM: ""
+
+targets:
+  DoomScrollInterrupter:
+    type: application
+    platform: iOS
+    sources: [App, Shared]
+    dependencies:
+      - target: MonitorExtension
+      - target: ShieldConfigurationExtension
+      - target: ShieldActionExtension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.DoomScrollInterrupter
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Doom Scroll Interrupter
+        UILaunchScreen: {}
+    entitlements:
+      path: App/App.entitlements
+      properties:
+        com.apple.developer.family-controls: true
+        com.apple.security.application-groups: [group.com.example.DoomScrollInterrupter]
+
+  MonitorExtension:
+    type: app-extension
+    platform: iOS
+    sources: [MonitorExtension, Shared]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.DoomScrollInterrupter.MonitorExtension
+    info:
+      path: MonitorExtension/Info.plist
+      properties:
+        CFBundleDisplayName: Monitor
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.deviceactivity.monitor-extension
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).DeviceActivityMonitorExtension
+    entitlements:
+      path: MonitorExtension/MonitorExtension.entitlements
+      properties:
+        com.apple.developer.family-controls: true
+        com.apple.security.application-groups: [group.com.example.DoomScrollInterrupter]
+
+  ShieldConfigurationExtension:
+    type: app-extension
+    platform: iOS
+    sources: [ShieldConfigurationExtension, Shared]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.DoomScrollInterrupter.ShieldConfigurationExtension
+    info:
+      path: ShieldConfigurationExtension/Info.plist
+      properties:
+        CFBundleDisplayName: Shield Configuration
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.ManagedSettingsUI.shield-configuration-service
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShieldConfigurationExtension
+    entitlements:
+      path: ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements
+      properties:
+        com.apple.developer.family-controls: true
+        com.apple.security.application-groups: [group.com.example.DoomScrollInterrupter]
+
+  ShieldActionExtension:
+    type: app-extension
+    platform: iOS
+    sources: [ShieldActionExtension, Shared]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.DoomScrollInterrupter.ShieldActionExtension
+    info:
+      path: ShieldActionExtension/Info.plist
+      properties:
+        CFBundleDisplayName: Shield Action
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.ManagedSettings.shield-action-service
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShieldActionExtension
+    entitlements:
+      path: ShieldActionExtension/ShieldActionExtension.entitlements
+      properties:
+        com.apple.developer.family-controls: true
+        com.apple.security.application-groups: [group.com.example.DoomScrollInterrupter]
